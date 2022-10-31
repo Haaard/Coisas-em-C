@@ -1,0 +1,248 @@
+ programa que realize o cadastro de contas bancárias
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <string.h>
+#define MAX 3
+
+struct conta{
+        char cliente[50];
+        int cc;
+        float saldo;
+    };
+
+int cadConta(){
+    struct conta add[MAX];
+    int i, ncc, contador, cont = 0;
+
+    do{
+        printf("Digite o Numero da Conta: ");
+        scanf("%d",&ncc);
+
+        for(i=0; i<MAX; i++){
+            if(ncc != add[i].cc){
+                contador++;
+            }
+        }
+        if(contador == MAX){
+            add[cont].cc = ncc;
+            printf("Digite o Nome do Cliente: ");
+            scanf("%s", &add[cont].cliente);
+            printf("Digite o saldo: ");
+            scanf("%f", &add[cont].saldo);
+            printf("\nConta cadastrada com sucesso!\n");
+            printf("\n");
+            contador = 0;
+        }
+        else{
+            cont = cont - 1;
+            printf("Conta já existe!!\n");
+            contador = 0;
+        }
+        cont++;
+    }while(cont < MAX);
+    system("cls");
+    return(0);
+}
+
+int visualizaConta(){
+    int i, tem, verificador, tipo, cc;
+    struct conta view[MAX];
+    char cli[50] = {"NULL"};
+
+    do{
+        printf("\nSelecione a opção que melhor lhe atenda...\n");
+        printf("1 - Visualizar contas p/ Cliente\n");
+        printf("2 - Visualizar conta p/ Conta\n");
+        printf("3 - Visualizar todas as contas\n");
+        printf("4 - Sair deste Menu\n");
+        printf("\nDigite uma opção: ");
+        scanf("%i", &tipo);
+
+        switch(tipo){
+            case 1:
+                system("cls");
+                printf("\n\n");
+                printf("Digite o nome do cliente: ");
+                scanf("%s", &cli);
+                tem = 0;
+
+                for(i=0; i<MAX; i++){
+                    verificador = (strcmp(cli, view[i].cliente));
+                    if(verificador == 0){
+                        printf("\n\n");
+                        printf("Conta: %d - Cliente: %s - Saldo: %.2f\n", view[i].cc, view[i].cliente, view[i].saldo);
+                        tem = 1;
+                    }
+                }
+                if(tem == 0){
+                    printf("\n\nNão existe conta cadastrada para este cliente!!\n");
+                }
+                system("pause");
+                system("cls");
+                break;
+
+            case 2:
+                system("cls");
+                printf("\n\n");
+                printf("Digite o Numero da Conta: ");
+                scanf("%d", &cc);
+                tem = 0;
+
+                for(i=0; i<MAX; i++){
+                    if(cc == view[i].cc){
+                        printf("Conta: %d - Cliente: %s - Saldo: %.2f\n", view[i].cc, view[i].cliente, view[i].saldo);
+                            tem = 1;
+                        }
+                    }
+
+                    if(tem == 0){
+                        printf("\nNão existe esta conta cadastrada!!\n");
+                    }
+                    system("pause");
+                    system("cls");
+                    break;
+
+            case 3:
+                for(i=0; i<MAX; i++){
+                    printf("Conta: %d - Cliente: %s - Saldo: %.2f\n", view[i].cc, view[i].cliente, view[i].saldo);
+                }
+                system("pause");
+                system("cls");
+                break;
+                default:
+                    printf("Opção de Sair... XauXau");
+                    system("cls");
+        }
+    }while(tipo != 4);
+    return(0);
+}
+
+int excluir(){
+    int op = 0, excluir, tem, i, verificador;
+    char excluirC[50] = {"NULL"};
+    struct conta exc[MAX];
+
+    do{
+        printf("\nSelecione a opção que melhor lhe atenda...\n");
+        printf("\n1 - Excluir conta p/ Conta");
+        printf("\n2 - Excluir conta p/ Cliente");
+        printf("\n3 - Sair deste Menu\n");
+        printf("\nDigite uma opção: ");
+        scanf("%i", &op);
+
+        switch(op){
+            case 1:
+                printf("Digite o Numero da Conta: ");
+                scanf("%d", &excluir);
+                tem = 0;
+
+                for(i=0; i<MAX; i++){
+                    if(excluir == exc[i].cc)
+                        tem = 1;
+                }
+                if(tem == 1){
+                    printf("\nConta Localizada!!\n");
+                }
+                if(tem == 0){
+                    printf("\nNão existe esta conta cadastrada!!\n");
+                    system("cls");
+                }
+                else{
+                    for(i=0; i<MAX; i++){
+                        if(excluir == exc[i].cc){
+                            exc[i].cc = 0;
+                            strcpy(exc[i].cliente, "NULL");
+                            exc[i].saldo = 0.0;
+                            printf("\nConta Excluida com sucesso!!\n");
+                            system("pause");
+                            system("cls");
+                        }
+                    }
+                }
+                system("pause");
+                system("cls");
+                break;
+
+            case 2:
+                printf("Digite o Nome do Cliente: ");
+                scanf("%s", &excluirC);
+                tem = 0;
+
+                for(i=0; i<MAX; i++){
+                    verificador = (strcmp(excluirC, exc[i].cliente));
+                    if(verificador == 0){
+                        tem = 1;
+                        exc[i].cc = 0;
+                        strcpy(exc[i].cliente, "NULL");
+                        exc[i].saldo = 0.0;
+                        printf("\nConta Localizada!!\n");
+                        printf("\nConta Excluida com sucesso!!\n");
+                        system("pause");
+                        system("cls");
+                    }
+                }
+                if(tem == 0){
+                    printf("\nNão existe esta conta cadastrada!!\n");
+                    system("cls");
+                }
+                break;
+                default:
+                    printf("Opção de Sair... XauXau");
+                    system("cls");
+        }
+    }while(op != 3);
+}
+
+
+int main()
+{
+    setlocale(LC_ALL,"portuguese");
+    int num = 0, i, cadConta(), visualizaConta(), excluir();
+    struct conta banco[MAX];
+
+    printf("8) Faça um programa que realize o cadastro de contas bancárias com as seguintes informações: número da conta, nome do cliente e saldo. O banco permitirá o cadastramento de apenas 15 contas e não pode haver mais que uma conta com o mesmo número. O programa deverá usar REGISTRO em sua estrutura de dados e criar um menu de opções como a seguir:\nMenu de Opções:\n\n");
+
+    for(i=0; i<MAX; i++){
+        strcpy(banco[i].cliente, "NULL");
+        banco[i].cc = 0;
+        banco[i].saldo = 0.0;
+    }
+
+    do{
+        printf("\nMenu de Opções:\n1 - Cadastrar Contas\n2 - Visualizar contas\n3 - Excluir contas\n4 - Sair.\n\n");
+        printf("\nDigite uma opção: ");
+        scanf("%i", &num);
+
+        switch(num){
+            case 1:
+                system("cls || clear");
+                printf("", cadConta());
+                break;
+
+            case 2:
+                system("cls || clear");
+                printf("", visualizaConta());
+                break;
+
+            case 3:
+                system("cls || clear");
+                printf("", excluir());
+                break;
+
+            case 4:
+                system("cls || clear");
+                printf("Opcão de Sair!! Xau Xau\n");
+                break;
+                default:
+                    system("cls || clear");
+        }
+    }while(num != 4);
+    return 0;
+}
+
+
+
+
